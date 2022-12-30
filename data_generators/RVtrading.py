@@ -46,7 +46,7 @@ def generateA_task(N):
     stdev_bid_ask = np.random.uniform(0.01, 0.2)
 
     # Trade frequency
-    trade_freq = np.random.uniform(0., .2)
+    trade_freq = np.random.uniform(.2, 10.)
 
     # Trade skew (ratio of buys to sells)
     trade_skew = np.random.uniform(0., 1.)
@@ -109,14 +109,17 @@ def generateA_task(N):
         ask_timeseries.append(asks)
 
     # Finally, generate the tape data (trade history) to be able to simulate fills.
-    # TODO: trade probability should be inversely proportional to bid-ask spread!
     trade_timeseries = []
     for ts_idx in range(len(timeseries)):
         trades = []
 
         for t in range(N):
+            # trade probability is inversely proportional to bid-ask spread!
+            current_bid_ask_spread = ask_timeseries[ts_idx][t] - bid_timeseries[ts_idx][t]
+            current_trade_freq = (1.0 / (100. * current_bid_ask_spread)) * trade_freq
+
             tmp = np.random.uniform(0., 1.)
-            if tmp < trade_freq:
+            if tmp < current_trade_freq:
                 # a trade occurred, let's determine which side of the book was filled.
                 tmp = np.random.uniform(0., 1.)
                 if tmp < trade_skew:
