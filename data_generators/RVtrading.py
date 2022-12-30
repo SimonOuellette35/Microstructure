@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 # G - F, but make base price levels uneven, such that hedging ratios other than 1:1 have to be used.
 # H - G, but simulate L2 book with bid-ask sizes
 # I = H, but simulate dark positions: fills sometimes occur at prices between the bid and ask (such as midpoint, for example)
+# J = I, but simulate each of the different exchanges and their particular behaviours.
 
 def roundPrice(raw_price):
     price100 = int(raw_price * 100.0)
@@ -22,10 +23,12 @@ def generateA_task(N):
 
     timeseries = []
 
+    # TODO: Wiggins-like mean-reverting volatility
+
     # first randomize the parameters of the relationship
 
     # Strength of random innovations of individual asset's random walk
-    RW_noise_vol = np.random.uniform(0.01, 0.1)
+    RW_noise_vol = np.random.uniform(0.001, 0.05)
 
     # Base price level of assets
     base_price = np.random.uniform(5., 100.)
@@ -34,7 +37,7 @@ def generateA_task(N):
     theta = np.random.uniform(0.05, 0.25)
 
     # Strength of random innovation of the cointegration relationship
-    coint_noise_vol = np.random.uniform(0.01, 0.1)
+    coint_noise_vol = np.random.uniform(0.001, 0.05)
 
     # Mean bid-ask spread per asset
     mean_bid_ask = np.random.uniform(0.01, 0.5)
@@ -64,7 +67,7 @@ def generateA_task(N):
 
     baseline_ts.append(midpoint)
     for t in range(N-1):
-        tmp_midpoint = baseline_ts[-1] + np.random.normal(0., RW_noise_vol)
+        tmp_midpoint = baseline_ts[-1] * np.exp(np.random.normal(0., RW_noise_vol))
         baseline_ts.append(tmp_midpoint)
 
     other_ts = []
@@ -93,7 +96,6 @@ def generateA_task(N):
 
         bid_ask_spread = initial_bid_ask
 
-        # TODO: prices can't be below 0! log-normal distribution is required...
         for t in range(N):
             last_bid = roundPrice(ts[t] - bid_ask_spread)
             last_ask = roundPrice(ts[t] + bid_ask_spread)
