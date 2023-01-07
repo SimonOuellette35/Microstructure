@@ -42,7 +42,7 @@ To instantiate a Cointegration object, pass a list of Asset objects and a parame
 
 Once an Asset or a Cointegration object *(obj)* has been instantiated, you can use it to generate a number of data points as follows:
 ```
-*data_points = obj.generate(N)*
+data_points = obj.generate(N)
 ```
 
 For the case of DataGeneration.Cointegration, this will generate N data points of the following format:
