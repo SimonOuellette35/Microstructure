@@ -71,7 +71,7 @@ Run the *main.py* file to generate data and visualize it.
 * Trade simulation should support dark exchanges: fills that occur in-between the bid and the ask
 * Return available bid/ask sizes on the book (not just prices, as is the case right now)
 * Support non 1:1 cointegration levels
-* Support for exogenous variables that influence the cointegration relationshp and the individual assets
+* Support for exogenous variables that influence the cointegration relationship and the individual assets
 * Simulate Level 2 book
 * Simulate different exchanges with different functionalities (ideally based on the real Canadian and U.S. exchanges)
 * Model Wiggins-like mean-reverting volatility
