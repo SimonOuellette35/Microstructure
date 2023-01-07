@@ -1,4 +1,4 @@
-from data_generators.RVtrading import generateA_task
+from RVtrading import generateA_task
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -20,8 +20,6 @@ ax2.plot(trades[1], 'bo')
 # visualize the spread
 bid_spreads = np.array(bids[0]) - np.array(bids[1])
 ask_spreads = np.array(asks[0]) - np.array(asks[1])
-
-print("bid_spreads = ", bid_spreads.shape)
 
 ax3.set_title('Spread')
 ax3.plot(bid_spreads, color='green')
