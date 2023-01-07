@@ -7,7 +7,7 @@
 
 One might wonder why it would be useful to generate simulated financial data instead of using the real thing: historical data. There are two main reasons for this.
 
-First, high-quality financial data is extremely expensive. This is especially true of level 2 data, but even high-frequency level 1 data is often unaffordable. The only free, public historical data that is available is daily or hourly bar data, which is too low-frequency and too simplistic to be useful to professional traders.
+First, high-quality financial data is extremely expensive. This is especially true of level 2 data, but even high-frequency level 1 data is often unaffordable. The only free, public historical data that is available is daily or hourly bar data, which is too low-frequency and too simplistic to be useful to professional traders (in practice there are also very few, if any, inefficiencies at this level).
 
 Second, when using algorithmic or machine learning approaches, it is only too easy to overfit historical data or incur a "model selection bias" on this data. In fact, historical data and backtesting should not be used as a research tool, methodologically speaking (see Marcos Lopez de Prado's book "Advances in Financial Machine Learning", for example). Doing so is the easiest way to ensure that you develop a strategy that only works on paper, or a strategy that only works for a particular market regime. Instead, historical data and backtesting tools should be used merely as "sanity checks" to confirm that the resulting strategy makes sense, before going live with it.
 
