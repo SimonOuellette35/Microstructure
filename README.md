@@ -76,6 +76,7 @@ Run the *main.py* file to generate data and visualize it.
 * Simulate Level 2 book
 * Simulate different exchanges with different functionalities (ideally based on the real Canadian and U.S. exchanges)
 * Model Wiggins-like mean-reverting volatility
+* More generally anything that is a stochastic process (volatility, trade_skew, etc.) should be configurable by instantiating a process from a library of general stochastic processes. Allows for better customization of the dataset.
 * A module that makes it easy to do curriculum learning by building increasingly complex data series
 * More realistic asset models than just log-normal (support Cauchy distributions, for example?)
 * **DataGeneration.Derivative** object (to simulate things such as options)
