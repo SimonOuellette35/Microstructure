@@ -67,6 +67,7 @@ Run the *main.py* file to generate data and visualize it.
 ###### TODO/Desired features:
 
 * More realistic/complex Cointegration mechanism that can simulate temporary shocks
+* trade_skew and trade_freq shouldn't be static parameters? They are stochastic processes?
 * Support for regime changes and temporary trends when simulating individual assets
 * Trade simulation should support dark exchanges: fills that occur in-between the bid and the ask
 * Return available bid/ask sizes on the book (not just prices, as is the case right now)
