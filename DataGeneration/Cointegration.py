@@ -13,16 +13,32 @@ class Cointegration:
 
         theta = self.params['theta']
         vol = self.params['volatility']
+        premia = self.params['premia']
+        shock_freq = self.params['shock_freq']
+        shock_duration = self.params['shock_duration']
+        shock_mean = self.params['shock_mean']
+        shock_stdev = self.params['shock_stdev']
+
+        current_premia = np.copy(premia)
         for i in range(1, len(self.assets)):
-            base_price = self.assets[i].params['base_price']
+            base_price = self.assets[0].params['base_price'] - premia[i]
             other_ts = []
             midpoint = base_price * np.exp(np.random.normal(self.assets[i].params['trend'],
                                                             self.assets[i].params['volatility']))
             other_ts.append(midpoint)
 
             for t in range(N - 1):
-                tmp_midpoint = other_ts[-1] + theta * (baseline_ts[t] - other_ts[-1]) * np.exp(np.random.normal(0., vol))
+                tmp_midpoint = other_ts[-1] + theta * (baseline_ts[t] - other_ts[-1] - current_premia[i]) * np.exp(np.random.normal(0., vol))
                 other_ts.append(tmp_midpoint)
+
+                # model temporary shock as a temporary deviation in premia.
+                rnd = np.random.uniform()
+                if rnd < shock_freq[i]:
+                    current_premia[i] += np.random.normal(shock_mean[i], shock_stdev[i])
+
+                # gradually bring shocked premia back to their original values.
+                if current_premia[i] != premia[i]:
+                    current_premia[i] = premia[i] + shock_duration[i] * (current_premia[i] - premia[i])
 
             midpoints.append(other_ts)
 

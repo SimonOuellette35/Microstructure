@@ -45,14 +45,48 @@ def generateB_task(N, num_assets=2):
         assets.append(Asset(params))
 
     # Strength of mean reversion of assets
-    theta = np.random.uniform(0.05, 0.25)
+    theta = np.random.uniform(0.1, 0.45)
 
     # Strength of random innovation of the cointegration relationship
-    noise_vol = np.random.uniform(0.001, 0.05)
+    noise_vol = np.random.uniform(0.001, 0.025)
+
+    # Premium around which each asset cointegrates w.r.t. the first asset
+    premia = [0.]
+    shock_freq = [0.]
+    shock_duration = [0.]
+    shock_mean = [0.]
+    shock_stdev = [0.]
+    for _ in range(1, num_assets):
+        premia.append(np.random.normal(0., 2.5))
+
+        # Generate occasional temporary shocks in the cointegration relationship
+        # shock_freq: how frequent are the shocks, a value between 0 and 1. At 0, shocks are disabled. At 1, shocks happen
+        # at every timestep (not recommended).
+        shock_freq.append(np.random.uniform(0, 0.1))
+        print("shock_freq = ", shock_freq[-1])
+
+        # shock_duration: strength of persistence of shocks, a value between 0 and 1. At 0, shocks immediately revert to
+        # the original premium value (i.e. they disappear). At 1, the shocks are permanent. This value is similar in
+        # functionality to the theta in the cointegration relationship.
+        shock_duration.append(np.random.uniform())
+        print("shock_duration = ", shock_duration[-1])
+
+        # shock_mean: the average jump in premium when a shock occurs.
+        shock_mean.append(np.random.normal(0, 1.))
+        print("shock_mean = ", shock_mean[-1])
+
+        # shock_stdev: the standard deviation to use when selecting the random jump value for a shock.
+        shock_stdev.append(np.random.uniform(0.01, 0.5))
+        print("shock_stdev = ", shock_stdev[-1])
 
     coint_params = {
         'theta': theta,
-        'volatility': noise_vol
+        'volatility': noise_vol,
+        'premia': premia,
+        'shock_freq': shock_freq,
+        'shock_duration': shock_duration,
+        'shock_mean': shock_mean,
+        'shock_stdev': shock_stdev,
     }
 
     coint = Cointegration(assets, coint_params)

@@ -39,6 +39,11 @@ modelled as a lognormal random walk. To instantiate it, pass a parameter diction
 To instantiate a Cointegration object, pass a list of Asset objects and a parameter dictionary that contains the following values:
 * 'theta': the strength of mean reversion. A value of 0 means no cointegration. A strength of 1 means the assets will follow each other to perfection.
 * 'volatility': the strength of the innovations that temporarily drive the prices apart. This is the strength of the "pushing" force, while theta represents the strength of the "pulling" force.
+* 'premia': for each asset, the constant mean difference w.r.t. the price level of the first asset (value at index 0 is therefore unused).
+* 'shock_freq': for each asset, how frequent are the shocks, a value between 0 and 1. At 0, shocks are disabled. At 1, shocks happen at every time step (not recommended).
+* 'shock_duration': for each asset, the strength of persistence of shocks, a value between 0 and 1. At 0, shocks immediately revert to the original premium value (i.e. they disappear). At 1, the shocks are permanent. This value is similar in functionality to the theta in the cointegration relationship.
+* 'shock_mean': for each asset, the average jump in premium when a shock occurs.
+* 'shock_stdev': for each asset, the standard deviation to use when selecting the random jump value for a shock.
 
 Once an Asset or a Cointegration object *(obj)* has been instantiated, you can use it to generate a number of data points as follows:
 ```
@@ -66,20 +71,21 @@ Run the *main.py* file to generate data and visualize it.
 
 ###### TODO/Desired features:
 
-* More realistic/complex Cointegration mechanism that can simulate temporary shocks
-* Support for regime changes and temporary trends when simulating individual assets
-* Trade simulation should support dark exchanges: fills that occur in-between the bid and the ask
-* Return available bid/ask sizes on the book (not just prices, as is the case right now)
-* Support non 1:1 cointegration levels
-* Support for exogenous variables that influence the cointegration relationshp and the individual assets
-* Simulate Level 2 book
-* Simulate different exchanges with different functionalities (ideally based on the real Canadian and U.S. exchanges)
-* Model Wiggins-like mean-reverting volatility
-* A module that makes it easy to do curriculum learning by building increasingly complex data series
-* More realistic asset models than just log-normal (support Cauchy distributions, for example?)
-* **DataGeneration.Derivative** object (to simulate things such as options)
-* A live market simulation mode (rather than only generating historical data) with automated participants
-* Optimize & parallelize code for faster data generation
+* [x] More realistic/complex Cointegration mechanism that can simulate temporary shocks
+* [ ] Support for regime changes and temporary trends when simulating individual assets
+* [ ] Trade simulation should support dark exchanges: fills that occur in-between the bid and the ask
+* [ ] Return available bid/ask sizes on the book (not just prices, as is the case right now)
+* [ ] Support non 1:1 cointegration coefficients
+* [ ] Create a pip package for easy install
+* [ ] Support for exogenous variables that influence the cointegration relationshp and the individual assets
+* [ ] Simulate Level 2 book
+* [ ] Simulate different exchanges with different functionalities (ideally based on the real Canadian and U.S. exchanges)
+* [ ] Model Wiggins-like mean-reverting volatility
+* [ ] A module that makes it easy to do curriculum learning by building increasingly complex data series
+* [ ] More realistic asset models than just log-normal (support Cauchy distributions, for example?)
+* [ ] **DataGeneration.Derivative** object (to simulate things such as options)
+* [ ] A live market simulation mode (rather than only generating historical data) with automated participants
+* [ ] Optimize & parallelize code for faster data generation
 
 ###### About the author:
 
