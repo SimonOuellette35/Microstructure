@@ -88,7 +88,6 @@ Run the *main.py* file to generate data and visualize it.
 * [ ] **DataGeneration.Derivative** object (to simulate things such as options)
 * [ ] A live market simulation mode (rather than only generating historical data) with automated participants
 * [ ] Optimize & parallelize code for faster data generation
-=======
 
 ###### About the author:
 
