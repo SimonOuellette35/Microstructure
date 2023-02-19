@@ -31,8 +31,8 @@ modelled as a lognormal random walk. To instantiate it, pass a parameter diction
 * 'base_price': the starting price level for this asset.
 * 'mean_bid_ask': the average bid-ask spread of the asset.
 * 'stdev_bid_ask': the standard deviation of the changes in the bid-ask spread.
-* 'trade_freq': the frequency at which it trades, between 0 and 1. If 0, it never trades. If 1, it trades at every single timestep.
-* 'trade_skew': the ratio of buy trades vs sell trades. At 0.5, there is an equal distribution of buys and sells on the asset. At 1, trades only occur on the ask side (active buys). At 0, trades only occur on the bid side (active sells).
+* 'trade_freq': the trade frequency stochastic process, an object instance from the library [stochastic](https://github.com/crflynn/stochastic). See RVtrading.py for an example.
+* 'trade_skew': a stochastic process, as in trade_freq, that represents the ratio of buy trades vs sell trades. At 0.5, there is an equal distribution of buys and sells on the asset. At 1, trades only occur on the ask side (active buys). At 0, trades only occur on the bid side (active sells).
 
 **DataGeneration.Cointegration** is used to build relationships between assets of the provided list. In particular, this relationship is one of cointegration (not correlation). This means that the price levels of these assets will tend to revert to a fixed mean distance between each other. This is currently modelled as an Ornstein-Uhlenbeck process.
 
@@ -72,7 +72,7 @@ Run the *main.py* file to generate data and visualize it.
 ###### TODO/Desired features:
 
 * [x] More realistic/complex Cointegration mechanism that can simulate temporary shocks
-* [ ] trade_skew and trade_freq shouldn't be static parameters? They are stochastic processes?
+* [x] trade_skew and trade_freq shouldn't be static parameters? They are stochastic processes?
 * [ ] Support for regime changes and temporary trends when simulating individual assets
 * [ ] Trade simulation should support dark exchanges: fills that occur in-between the bid and the ask
 * [ ] Return available bid/ask sizes on the book (not just prices, as is the case right now)

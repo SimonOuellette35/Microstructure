@@ -1,6 +1,7 @@
 import numpy as np
 from DataGeneration.Asset import Asset
 from DataGeneration.Cointegration import Cointegration
+from stochastic.processes.diffusion.diffusion import DiffusionProcess
 
 # This generates data for simulation of a relative value/market making strategy (i.e. Cointegration-based strategy).
 
@@ -27,19 +28,25 @@ def generateB_task(N, num_assets=2):
         # Std. dev of bid-ask spread per asset (as a percentage of the bid-ask spread value)
         stdev_bid_ask = np.random.uniform(0.01, 0.2)
 
-        # Trade frequency
-        trade_freq = np.random.uniform(.2, 10.)
+        # Trade frequency process
+        trade_freq_speed = np.random.uniform(0.01, .5)
+        trade_freq_mean = np.random.uniform(0.05, 75.)
+        trade_freq_vol = np.random.uniform(1., 10.)
+        trade_freq_process = DiffusionProcess(speed=trade_freq_speed/float(N), vol=trade_freq_vol/float(N), mean=trade_freq_mean, t=N)
 
-        # Trade skew (ratio of buys to sells)
-        trade_skew = np.random.uniform(0., 1.)
+        # Trade skew process
+        trade_skew_speed = np.random.uniform(0.01, .5)
+        trade_skew_mean = np.random.uniform(0.01, 1.)
+        trade_skew_vol = np.random.uniform(1., 10.)
+        trade_skew_process = DiffusionProcess(speed=trade_skew_speed/float(N), vol=trade_skew_vol/float(N), mean=trade_skew_mean, t=N)
 
         params = {
             'volatility': noise_vol,
             'base_price': base_price,
             'mean_bid_ask': mean_bid_ask,
             'stdev_bid_ask': stdev_bid_ask,
-            'trade_freq': trade_freq,
-            'trade_skew': trade_skew,
+            'trade_freq': trade_freq_process,
+            'trade_skew': trade_skew_process,
             'trend': 0.
         }
         assets.append(Asset(params))

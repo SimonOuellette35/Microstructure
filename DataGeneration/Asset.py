@@ -13,16 +13,43 @@ class Asset:
         trades = []
         N = len(bids)
 
+        def trim_process(process):
+            output = []
+            for p in process:
+                if p <= 0:
+                    p = 0.01
+
+                if p >= 1:
+                    p = 0.99
+
+                output.append(p)
+
+            return np.array(output)
+
+        trade_freq_init = np.random.normal(0.5, .25)
+        trade_skew_init = np.random.normal(0.5, .25)
+
+        trade_freqs_unadjusted = self.params['trade_freq'].sample(N, trade_freq_init)
+        trade_skews = self.params['trade_skew'].sample(N, trade_skew_init)
+
+        trade_freqs_unadjusted = trim_process(trade_freqs_unadjusted)
+        trade_skews = trim_process(trade_skews)
+
         for t in range(N):
             # trade probability is inversely proportional to bid-ask spread!
             current_bid_ask_spread = asks[t] - bids[t]
-            current_trade_freq = (1.0 / (100. * current_bid_ask_spread)) * self.params['trade_freq']
+
+            spread_adjustment = 1.0 / 100. * current_bid_ask_spread
+            if spread_adjustment < 0.25:
+                spread_adjustment = 0.25
+
+            current_trade_freq = spread_adjustment * trade_freqs_unadjusted[t]
 
             tmp = np.random.uniform(0., 1.)
             if tmp < current_trade_freq:
                 # a trade occurred, let's determine which side of the book was filled.
                 tmp = np.random.uniform(0., 1.)
-                if tmp < self.params['trade_skew']:
+                if tmp < trade_skews[t]:
                     # the ask was filled
                     trades.append(asks[t])
                 else:
